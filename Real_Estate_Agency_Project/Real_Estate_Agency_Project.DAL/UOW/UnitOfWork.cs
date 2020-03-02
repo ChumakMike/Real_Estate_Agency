@@ -7,6 +7,8 @@ using Real_Estate_Agency_Project.DAL.Identity;
 using Real_Estate_Agency_Project.DAL.Interfaces;
 using Real_Estate_Agency_Project.DAL.Repositories;
 using Real_Estate_Agency_Project.DAL.DBContext;
+using Real_Estate_Agency_Project.DAL.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Real_Estate_Agency_Project.DAL.UOW {
 
@@ -18,16 +20,23 @@ namespace Real_Estate_Agency_Project.DAL.UOW {
         private ApplicationRoleManager roleManager;
         private ApplicationUserManager userManager;
 
-        public UnitOfWork() => ApplicatonContext = new EFApplicatonContext();
+        public UnitOfWork() {
+            ApplicatonContext = new EFApplicatonContext();
+            userRepository = new UserRepository(ApplicatonContext);
+            announcmentRepository = new AnnouncmentRepository(ApplicatonContext);
+            roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(ApplicatonContext));
+            userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(ApplicatonContext));
+        }
+
         public UnitOfWork(EFApplicatonContext ApplicatonContext) => this.ApplicatonContext = ApplicatonContext;
 
-       // public IUserRepository UserRepository => userRepository ??= new UserRepository(ApplicatonContext);
+        public IUserRepository UserRepository => userRepository;
 
-        public IAnnouncmentRepository AnnouncmentRepository => throw new NotImplementedException();
+        public IAnnouncmentRepository AnnouncmentRepository => announcmentRepository;
 
-        public ApplicationUserManager UserManager => throw new NotImplementedException();
+        public ApplicationUserManager UserManager => userManager;
 
-        public ApplicationRoleManager RoleManager => throw new NotImplementedException();
+        public ApplicationRoleManager RoleManager => roleManager;
 
         private bool disposed = false;
 
