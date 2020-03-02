@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Real_Estate_Agency_Project.DAL.Models {
+
     internal class ApplicationRole : IdentityRole { }
 }
